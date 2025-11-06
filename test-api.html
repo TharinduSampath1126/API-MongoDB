@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Backend API Test</h1>
+    <div id="result"></div>
+    
+    <button onclick="testGetUsers()">Test Get Users</button>
+    <button onclick="testCreateUser()">Test Create User</button>
+    
+    <script>
+        async function testGetUsers() {
+            try {
+                const response = await fetch('http://localhost:5000/api/users');
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+        
+        async function testCreateUser() {
+            const testUser = {
+                firstName: "John",
+                lastName: "Doe", 
+                age: 25,
+                email: "john.doe" + Math.random() + "@example.com",
+                phone: "+1 123 456 7890",
+                birthDate: "1998-01-01"
+            };
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/users/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testUser)
+                });
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
